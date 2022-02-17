@@ -369,6 +369,8 @@ class raw_env(AECEnv, EzPickle):
             self.frames += 1
 
         done = not self.run or self.frames >= self.max_cycles
+
+        print("123123123")
         self.dones = {a: done for a in self.agents}
 
         # manage the kill list
