@@ -6,6 +6,7 @@ import json
 import os
 import sys
 from copy import deepcopy
+import time
 
 import supersuit as ss
 from pettingzoo.butterfly import (
@@ -55,10 +56,13 @@ with open(param_file) as f:
 class Args:
     def __init__(self) -> None:
         self.env_name = "knights-archers-zombies-v8"
+        #self.env_name = "pistonball_v4"
         self.n_runs =  1
         self.n_evaluations = 100
-        self.timesteps = 1e7
-        self.num_cpus = 8 #16
+        #self.timesteps = 1e7
+        self.timesteps = 2e6
+        self.num_cpus = 8
+        #self.num_cpus = 16
         self.num_eval_cpus = 4
         self.num_vec_envs = 4
 args = Args()
@@ -67,6 +71,7 @@ params = {
     "activation_fn": "relu",
     "agent_indicator": "invert",
     "batch_size": 64,
+    #"batch_size": 128,
     "n_steps": 1024,
     "gamma": 0.995,
     "learning_rate": 1.30299e-05,
@@ -182,6 +187,14 @@ all_mean_rewards = []
 log_dir = "./data/" + args.env_name + "/"
 os.makedirs(log_dir, exist_ok=True)
 
+
+
+models_dir = f"models/{int(time.time())}/"
+
+if not os.path.exists(models_dir):
+	os.makedirs(models_dir)
+
+
 for i in range(args.n_runs):
     model = PPO(
         env=env,
@@ -205,4 +218,5 @@ for i in range(args.n_runs):
         deterministic=True,
         render=False
     )
-    model.learn(total_timesteps=timesteps, callback=eval_callback)
+    model.learn(total_timesteps=timesteps, reset_num_timesteps=False, callback=eval_callback)
+    model.save(f"{models_dir}/ori-{i}-{timesteps}")

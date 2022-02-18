@@ -1,7 +1,7 @@
 #from pettingzoo.butterfly import pistonball_v6
 #env = pistonball_v6.env()
-from pettingzoo.butterfly import knights_archers_zombies_v8
-env = knights_archers_zombies_v8.env()
+from pettingzoo.butterfly import prospector_v4
+env = prospector_v4.env()
 
 def policy(agent, observation):
     #print(agent)
