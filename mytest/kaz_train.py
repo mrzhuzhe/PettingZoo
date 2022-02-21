@@ -1,6 +1,6 @@
 # https://github.com/Farama-Foundation/SuperSuit/pull/131
 # fix by this https://github.com/Farama-Foundation/PettingZoo/pull/629
-
+# https://github.com/jkterry1/Butterfly-Baselines/blob/main/train_all.sh
 import argparse
 import json
 import os
@@ -9,12 +9,17 @@ from copy import deepcopy
 import time
 
 import supersuit as ss
+
+"""
 from pettingzoo.butterfly import (
     cooperative_pong_v3,
     pistonball_v4,
     knights_archers_zombies_v8,
     prospector_v4,
 )
+"""
+import knights_archers_zombies.knights_archers_zombies as knights_archers_zombies_v8
+
 from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import EvalCallback
 from stable_baselines3.common.vec_env import VecMonitor
@@ -59,19 +64,19 @@ class Args:
         #self.env_name = "pistonball_v4"
         self.n_runs =  1
         self.n_evaluations = 100
-        #self.timesteps = 1e7
-        self.timesteps = 2e6
-        self.num_cpus = 8
-        #self.num_cpus = 16
-        self.num_eval_cpus = 4
+        self.timesteps = 1e7
+        #self.timesteps = 2e6
+        #self.num_cpus = 8
+        self.num_cpus = 16
+        self.num_eval_cpus = 16
         self.num_vec_envs = 4
 args = Args()
 params = {
     "net_arch": "small",
     "activation_fn": "relu",
     "agent_indicator": "invert",
-    "batch_size": 64,
-    #"batch_size": 128,
+    #"batch_size": 64,
+    "batch_size": 1024,
     "n_steps": 1024,
     "gamma": 0.995,
     "learning_rate": 1.30299e-05,
